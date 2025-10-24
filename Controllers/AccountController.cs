@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CMCS.Models;
+using CMCS_POE_PART_2.Models;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace CMCS.Controllers
+namespace CMCS_POE_PART_2.Controllers
 {
     public class AccountController : Controller
     {

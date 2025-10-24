@@ -1,10 +1,8 @@
-﻿using CMCS.Data;
-using CMCS.Models;
-using CMCS_POE_PART_2.Models;
+﻿using CMCS_POE_PART_2.Data;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace CMCS.Models
+namespace CMCS_POE_PART_2.Models
 {
     public sealed class DbHelper
     {

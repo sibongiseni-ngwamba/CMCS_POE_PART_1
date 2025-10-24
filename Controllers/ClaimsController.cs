@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using CMCS.Models;
+using CMCS_POE_PART_2.Models;
 using System.IO;
 using System.Diagnostics;  // For mini-profiler timestamps
 using System.Text;  // For log builder
 using System.Data.SqlClient;  // SqlException namespace
 using System;  // Exception base
 
-namespace CMCS.Controllers
+namespace CMCS_POE_PART_2.Controllers
 {
     // Innovative: Disposable profiler for auto-scope management
     public class ScopedProfiler : IDisposable

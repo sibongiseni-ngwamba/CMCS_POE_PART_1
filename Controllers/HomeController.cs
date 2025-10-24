@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace CMCS.Controllers
+namespace CMCS_POE_PART_2.Controllers
 {
     public class HomeController : Controller
     {

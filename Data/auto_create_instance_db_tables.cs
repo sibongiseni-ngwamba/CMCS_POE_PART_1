@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace CMCS.Data
+namespace CMCS_POE_PART_2.Data
 {
     /// <summary>
     /// Auto-initializes LocalDB instance, database, and tables for CMCS.
