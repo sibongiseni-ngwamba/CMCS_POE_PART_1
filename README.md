@@ -3,7 +3,7 @@
 ## Overview
 The CMCS **Claims Management and Verification System** is an ASP.NET Core MVC web application developed as part of the PROG6212 Portfolio of Evidence (PoE). 
 It was designed to streamline the process of submitting and approving monthly claims for Independent Contractor (IC) lecturers. 
-By simulating a real-world workflow, the CMCS provides lecturers, programme coordinators, and managers with a simplified digital platform for handling claim submissions, pre-approvals, and approvals.
+By simulating a real-world workflow, the CMCS provides lecturers, program coordinators, and managers with a simplified digital platform for handling claim submissions, pre-approvals, and approvals.
 It allows lecturers to submit teaching claims, program coordinators to verify them, and academic managers to approve or reject them.
 The system ensures transparent claim tracking and file upload for supporting documents.
 
@@ -16,9 +16,9 @@ This project demonstrates skills in **C#**, **ASP.NET Core MVC**, **GUI design**
   - Submit monthly claims (mock navigation only, no persistence).
   - Upload supporting documents (to be implemented in later iterations).
   - Track claim statuses with sample data provided.
-  - Lecturer claim submission with document uploads
+  - Lecturer claims submission with document uploads
 
-- **Programme Coordinator Features**
+- **Program Coordinator Features**
   - View lecturer-submitted claims.
   - Verify accuracy of submitted claims.
   - Pre-approve pending claims (sample data available).
@@ -125,7 +125,7 @@ xUnit tests mock the `IDbHelper` interface to ensure controllers behave correctl
 
 ## Project Plan (Prototype Timeline)
 - **Week 1:** Gather requirements and design layout.  
-- **Week 2:** Build Login and navigation system.  
+- **Week 2:** Build a Login and navigation system.  
 - **Week 3:** Add role-based Home page cards.  
 - **Week 4:** Implement Track Claim, Pre-Approve, and Approve pages with sample data.  
 - **Week 5:** Apply red + gray theme styling and refine UI.  
@@ -136,7 +136,7 @@ xUnit tests mock the `IDbHelper` interface to ensure controllers behave correctl
 ## Version Control Practices
 - Frequent commits for each feature addition (e.g., *"Added TrackClaim sample table"*).  
 - Descriptive commit messages.  
-- Git used for version control (can be integrated with GitHub). 
+- Git is used for version control (can be integrated with GitHub). 
 - Maintain **at least 5 commits** with descriptive messages:
   1. `feat: implement IDbHelper and DI setup`
   2. `fix: corrected DbHelper and SqlDataReader logic`
@@ -164,4 +164,5 @@ Institution: **The Independent Institute of Education (IIE)**
 
 ## GitHub Link
 Link: https://github.com/sibongiseni-ngwamba/CMCS_POE_Part1.git
+Link Part 2. I could not get the First Repo: 
 
