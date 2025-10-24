@@ -1,82 +1,73 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CMCS.Models;
+using CMCS_POE_PART_2.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CMCS_POE_PART_2.Controllers
+namespace CMCS.Controllers
 {
     public class ApprovalController : Controller
     {
-        // GET: ApprovalController
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        // GET: ApprovalController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: ApprovalController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: ApprovalController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Verify()
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (HttpContext.Session.GetString("Role") != "Coordinator") return RedirectToAction("Index", "Home");
+                var claims = await DbHelper.Instance.GetPendingClaimsAsync("Pending");
+                return View(claims);
             }
-            catch
+            catch (Exception)
             {
-                return View();
+                TempData["Error"] = "Unable to load pending claims.";
+                return View(new List<Claim>());
             }
         }
 
-        // GET: ApprovalController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: ApprovalController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Verify(int claimId)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (HttpContext.Session.GetString("Role") != "Coordinator") return BadRequest("Access denied.");
+                await DbHelper.Instance.UpdateClaimStatusAsync(claimId, "Verified");
+                TempData["Success"] = "Claim verified and sent for approval!";
+                return RedirectToAction("Verify");
             }
-            catch
+            catch (Exception)
             {
-                return View();
+                TempData["Error"] = "Verification failed—try again.";
+                return RedirectToAction("Verify");
             }
         }
 
-        // GET: ApprovalController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ApprovalController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Approve()
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if (HttpContext.Session.GetString("Role") != "Manager") return RedirectToAction("Index", "Home");
+                var claims = await DbHelper.Instance.GetPendingClaimsAsync("Verified");
+                return View(claims);
             }
-            catch
+            catch (Exception)
             {
-                return View();
+                TempData["Error"] = "Unable to load claims for approval.";
+                return View(new List<Claim>());
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Approve(int claimId, bool isApproved)
+        {
+            try
+            {
+                if (HttpContext.Session.GetString("Role") != "Manager") return BadRequest("Access denied.");
+                var status = isApproved ? "Approved" : "Rejected";
+                await DbHelper.Instance.UpdateClaimStatusAsync(claimId, status);
+                TempData["Success"] = isApproved ? "Claim approved!" : "Claim rejected.";
+                return RedirectToAction("Approve");
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "Approval action failed.";
+                return RedirectToAction("Approve");
             }
         }
     }
