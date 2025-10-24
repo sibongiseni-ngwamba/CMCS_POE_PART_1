@@ -42,7 +42,7 @@ This project demonstrates skills in **C#**, **ASP.NET Core MVC**, **GUI design**
 ---
 
 ## System Structure
-CMCS/
+- CMCS/
 ├── Controllers/
 │   ├── AccountController.cs   # Login, Register, Logout with hashing
 │   ├── ApprovalController.cs  # Verify and Approve claims
@@ -156,13 +156,13 @@ xUnit tests mock the `IDbHelper` interface to ensure controllers behave correctl
 ---
 
 ## Author
-Student: Sibongiseni Collel Ngwamba
-Student Number: ST10454956
-Module: **PROG6212 – Programming 2B Portfolio of Evidence**
-Year: 2025
-Institution: **The Independent Institute of Education (IIE)**
+- Student: Sibongiseni Collel Ngwamba
+- Student Number: ST10454956
+- Module: **PROG6212 – Programming 2B Portfolio of Evidence**
+- Year: 2025
+- Institution: **The Independent Institute of Education (IIE)**
 
 ## GitHub Link
-Link: https://github.com/sibongiseni-ngwamba/CMCS_POE_Part1.git
-Link Part 2. I could not get the First Repo: 
+- Link: https://github.com/sibongiseni-ngwamba/CMCS_POE_Part1.git
+- Link Part 2. I could not get the First Repo: https://github.com/sibongiseni-ngwamba/CMCS_POE_PART_1.git
 
