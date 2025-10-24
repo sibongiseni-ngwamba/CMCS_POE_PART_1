@@ -1,5 +1,51 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<CMCS_POE_PART_2.Models.Claim>
+<div class="card shadow">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0">Verified Claims for Approval</h5>
+    </div>
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <p class="text-muted">No verified claims awaiting decision.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Lecturer</th>
+                            <th>Module</th>
+                            <th>Total</th>
+                            <th>Documents</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var claim in Model)
+                        {
+                            <tr>
+                                <td>@claim.LecturerName</td>
+                                <td>@claim.module_name (@claim.faculty_name)</td>
+                                <td>R @claim.TotalAmount.ToString("F2")</td>
+                                <td>@claim.supporting_documents</td>
+                                <td>
+                                    <form asp-action="Approve" method="post" style="display:inline; margin-right:10px;">
+                                        <input type="hidden" name="claimId" value="@claim.claimID" />
+                                        <input type="hidden" name="isApproved" value="true" />
+                                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                    </form>
+                                    <form asp-action="Approve" method="post" style="display:inline;">
+                                        <input type="hidden" name="claimId" value="@claim.claimID" />
+                                        <input type="hidden" name="isApproved" value="false" />
+                                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
