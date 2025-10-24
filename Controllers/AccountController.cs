@@ -1,83 +1,87 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using CMCS.Models;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
 
-namespace CMCS_POE_PART_2.Controllers
+namespace CMCS.Controllers
 {
     public class AccountController : Controller
     {
-        // GET: AccountController
-        public ActionResult Index()
+        private string HashPassword(string pw)
         {
-            return View();
+            using var sha = SHA256.Create();
+            return Convert.ToBase64String(sha.ComputeHash(Encoding.UTF8.GetBytes(pw)));
         }
 
-        // GET: AccountController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+        public IActionResult Login() => View();
 
-        // GET: AccountController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: AccountController/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Login(string email, string password)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                var user = await DbHelper.Instance.GetUserByEmailAsync(email);
+                if (user == null || user.password != HashPassword(password))
+                {
+                    TempData["Error"] = "Invalid credentials. Please register if new.";
+                    return View();
+                }
+                HttpContext.Session.SetInt32("UserId", user.userID);
+                HttpContext.Session.SetString("Role", user.role);
+                HttpContext.Session.SetString("UserName", $"{user.full_names} {user.surname}");
+                return RedirectToAction("Index", "Home");
             }
-            catch
+            catch (Exception)
             {
+                TempData["Error"] = "Login service temporarily unavailable. Try again.";
                 return View();
             }
         }
 
-        // GET: AccountController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        public IActionResult Register() => View(new User { date = DateTime.Today });
 
-        // POST: AccountController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Register(User user, string confirmPassword)
         {
+            if (!ModelState.IsValid) return View(user);
+
+            if (string.IsNullOrEmpty(user.password) || user.password.Length < 8 || !Regex.IsMatch(user.password, @"^(?=.*[a-zA-Z])(?=.*\d)"))
+            {
+                ModelState.AddModelError("password", "Password must be 8+ characters with letters and numbers.");
+                return View(user);
+            }
+            if (user.password != confirmPassword)
+            {
+                ModelState.AddModelError("password", "Passwords do not match.");
+                return View(user);
+            }
+
             try
             {
-                return RedirectToAction(nameof(Index));
+                var existing = await DbHelper.Instance.GetUserByEmailAsync(user.email);
+                if (existing != null)
+                {
+                    ModelState.AddModelError("email", "Email already in use.");
+                    return View(user);
+                }
+
+                user.password = HashPassword(user.password);
+                await DbHelper.Instance.CreateUserAsync(user);
+                TempData["Success"] = "Registration successful! Please log in.";
+                return RedirectToAction("Login");
             }
-            catch
+            catch (Exception)
             {
-                return View();
+                TempData["Error"] = "Registration failed. Please try again.";
+                return View(user);
             }
         }
 
-        // GET: AccountController/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Logout()
         {
-            return View();
-        }
-
-        // POST: AccountController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
         }
     }
 }
