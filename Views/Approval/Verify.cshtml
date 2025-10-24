@@ -1,5 +1,47 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<CMCS_POE_PART_2.Models.Claim>
+<div class="card shadow">
+    <div class="card-header bg-warning text-dark">
+        <h5 class="mb-0">Pending Claims for Verification</h5>
+    </div>
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <p class="text-muted">No pending claims at the moment.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Lecturer</th>
+                            <th>Module</th>
+                            <th>Sessions/Hours/Rate</th>
+                            <th>Total</th>
+                            <th>Documents</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var claim in Model)
+                        {
+                            <tr>
+                                <td>@claim.LecturerName</td>
+                                <td>@claim.module_name (@claim.faculty_name)</td>
+                                <td>@claim.number_of_sessions / @claim.number_of_hours / R@claim.amount_of_rate</td>
+                                <td>R @claim.TotalAmount.ToString("F2")</td>
+                                <td>@(string.IsNullOrEmpty(claim.supporting_documents) ? "None" : claim.supporting_documents)</td>
+                                <td>
+                                    <form asp-action="Verify" method="post" style="display:inline;">
+                                        <input type="hidden" name="claimId" value="@claim.claimID" />
+                                        <button type="submit" class="btn btn-warning btn-sm">Verify</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

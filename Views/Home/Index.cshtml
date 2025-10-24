@@ -1,8 +1,65 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    var role = ViewBag.Role as string;
+    var name = ViewBag.UserName as string;
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row text-center">
+    <div class="col-12 mb-4">
+        <h1 class="display-4 text-primary">Welcome, @name!</h1>
+        <p class="lead">Role: <span class="badge bg-secondary">@role</span></p>
+    </div>
+    <div class="row">
+        @if (role == "Lecturer")
+        {
+            <div class="col-md-6 mb-3">
+                <a asp-controller="Claims" asp-action="New" class="text-decoration-none">
+                    <div class="card h-100 shadow border-primary">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Submit New Claim</h5>
+                            <p class="card-text">Enter sessions, hours, rate, and upload docs.</p>
+                            <button class="btn btn-primary">Get Started</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 mb-3">
+                <a asp-controller="Claims" asp-action="Index" class="text-decoration-none">
+                    <div class="card h-100 shadow">
+                        <div class="card-body">
+                            <h5 class="card-title">Track Your Claims</h5>
+                            <p class="card-text">Monitor status from pending to approved.</p>
+                            <button class="btn btn-outline-primary">View Status</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (role == "Coordinator")
+        {
+            <div class="col-md-12 mb-3">
+                <a asp-controller="Approval" asp-action="Verify" class="text-decoration-none">
+                    <div class="card h-100 shadow border-warning">
+                        <div class="card-body">
+                            <h5 class="card-title text-warning">Verify Pending Claims</h5>
+                            <p class="card-text">Review lecturer submissions for accuracy.</p>
+                            <button class="btn btn-warning">Review Now</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (role == "Manager")
+        {
+            <div class="col-md-12 mb-3">
+                <a asp-controller="Approval" asp-action="Approve" class="text-decoration-none">
+                    <div class="card h-100 shadow border-success">
+                        <div class="card-body">
+                            <h5 class="card-title text-success">Approve Verified Claims</h5>
+                            <p class="card-text">Make final decisions on pre-verified claims.</p>
+                            <button class="btn btn-success">Decide Now</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
 </div>
