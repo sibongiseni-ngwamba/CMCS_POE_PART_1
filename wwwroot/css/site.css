@@ -1,22 +1,241 @@
-html {
-  font-size: 14px;
+/* Modern Dark Theme Inspired by Grok: Black Canvas with Cyan Blue Accents */
+/* Adjusted to match Grok's interface: black bg, white text, cyan/blue accents for a futuristic AI feel */
+/* Custom colors: Cyan blue for accents to evoke xAI's modern, techy vibe */
+
+:root {
+    --bg-primary: #000000; /* Pure black – Grok's immersive void */
+    --bg-secondary: #1a1a1a; /* Dark gray – subtle card depth */
+    --text-primary: #ffffff; /* Bright white – crisp readability */
+    --text-secondary: #a0a0a0; /* Muted gray – secondary info */
+    --accent-primary: #0ea5e9; /* Cyan blue – Grok's signature accent */
+    --accent-hover: #0c8bce; /* Darker cyan – hover interaction */
+    --accent-glow: #00d1ff; /* Lighter cyan – glow effects */
+    --border-subtle: #333333; /* Dark gray – minimal borders */
+    --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+    --shadow-glow: 0 0 20px rgba(14, 165, 233, 0.3); /* Cyan glow */
+    --transition-ease: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth transitions */
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    /* Light Mode Override (For future toggle, inspired by Grok's potential light mode) */
+    :root[data-theme="light"] {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8f9fa;
+        --text-primary: #000000;
+        --text-secondary: #6c757d;
+        --accent-primary: #0ea5e9;
+        --accent-hover: #0c8bce;
+        --accent-glow: #00d1ff;
+        --border-subtle: #dee2e6;
+        --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.1);
+        --shadow-glow: 0 0 20px rgba(14, 165, 233, 0.2);
+    }
+
+body.bg-dark {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; /* Matches Grok's clean sans-serif */
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+.card {
+    border: none;
+    background-color: var(--bg-secondary);
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-ease);
+    border-radius: 12px; /* Rounded corners for modern feel */
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-glow);
+    }
+
+.card-header {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover)); /* Cyan gradient – dynamic accent */
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    border-radius: 12px 12px 0 0 !important;
 }
 
-body {
-  margin-bottom: 60px;
+.table-dark {
+    --bs-table-bg: var(--bg-secondary);
+    --bs-table-color: var(--text-primary);
+    --bs-table-border-color: var(--border-subtle);
+}
+
+    .table-dark th {
+        background-color: var(--accent-primary);
+        color: var(--text-primary);
+        border: none;
+    }
+
+.progress {
+    background-color: var(--border-subtle);
+    border-radius: 10px;
+    height: 24px;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-glow)); /* Cyan sweep – energetic progress */
+    border-radius: 10px;
+}
+
+.btn {
+    transition: var(--transition-ease);
+    border-radius: 8px;
+    font-weight: 600;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-glow);
+    }
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
+    color: #000000; /* Black text for contrast on cyan */
+}
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, var(--accent-hover), var(--accent-primary));
+        box-shadow: var(--shadow-glow);
+    }
+
+.btn-success {
+    background: linear-gradient(135deg, #10b981, #059669); /* Kept green for success, but can customize */
+}
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, #059669, #10b981);
+        box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    }
+
+.btn-warning {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+    .btn-warning:hover {
+        background: linear-gradient(135deg, #d97706, #f59e0b);
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+    }
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+    .btn-danger:hover {
+        background: linear-gradient(135deg, #dc2626, #ef4444);
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+    }
+
+.navbar {
+    background: var(--bg-primary) !important; /* Pure black to match Grok's top bar */
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(10px); /* Glass effect for depth */
+}
+
+.navbar-brand {
+    text-shadow: 0 0 10px var(--accent-glow); /* Cyan glow on brand */
+    font-weight: 700;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--text-secondary) !important;
+    transition: var(--transition-ease);
+}
+
+    .navbar-dark .navbar-nav .nav-link:hover {
+        color: var(--accent-primary) !important;
+        text-shadow: 0 0 5px var(--accent-glow);
+    }
+
+.alert {
+    border-radius: 10px;
+    border: none;
+    backdrop-filter: blur(5px);
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.1);
+    border-left: 4px solid #10b981;
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.1);
+    border-left: 4px solid #ef4444;
+}
+
+.form-control, .form-select {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-primary);
+    border-radius: 8px;
+    transition: var(--transition-ease);
+}
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.25);
+        background-color: var(--bg-secondary);
+    }
+
+    .form-control::placeholder {
+        color: var(--text-secondary);
+    }
+
+.badge {
+    font-size: 0.75em;
+    padding: 0.5em 0.75em;
+    border-radius: 20px;
+}
+
+/* Animation Overrides – Keep subtle like Grok's clean UI */
+[data-aos] {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+    [data-aos].aos-animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+.animate__pulse {
+    animation-duration: 1.5s;
+}
+
+#loadingSpinner {
+    color: var(--text-primary);
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Responsive Mobile-First */
+@media (max-width: 768px) {
+    .container-fluid {
+        padding: 1rem;
+    }
+
+    .card {
+        margin-bottom: 1rem;
+    }
+
+    .btn {
+        font-size: 1rem;
+        padding: 0.75rem;
+    }
+}
+
+/* Print-Friendly */
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    .card {
+        box-shadow: none;
+    }
 }
