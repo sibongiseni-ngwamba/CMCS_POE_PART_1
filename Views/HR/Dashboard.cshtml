@@ -1,5 +1,63 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<CMCS_POE_PART_2.Models.Claim>
+
+<div class="card shadow">
+    <div class="card-header bg-info text-dark">
+        <h5 class="mb-0">HR Dashboard — Approved Claims</h5>
+    </div>
+    <div class="card-body">
+        <form class="row g-3 mb-3" method="get">
+            <div class="col-md-3">
+                <label class="form-label">From</label>
+                <input type="date" name="from" value="@ViewBag.From" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">To</label>
+                <input type="date" name="to" value="@ViewBag.To" class="form-control" />
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button class="btn btn-primary" type="submit">Filter</button>
+            </div>
+            <div class="col-md-3 d-flex align-items-end justify-content-end">
+                <a class="btn btn-outline-primary me-2" href="@Url.Action("ExportCsv", "HR", new { from = ViewBag.From, to = ViewBag.To })">Export CSV</a>
+                <a class="btn btn-outline-warning" href="@Url.Action("ExportPdf", "HR", new { from = ViewBag.From, to = ViewBag.To })">Export PDF</a>
+            </div>
+        </form>
+
+        @if (!Model.Any())
+        {
+            <p class="text-muted">No approved claims found for the selected period.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-dark table-hover">
+                    <thead>
+                        <tr>
+                            <th>Claim ID</th>
+                            <th>Lecturer</th>
+                            <th>Module</th>
+                            <th>Faculty</th>
+                            <th>Total</th>
+                            <th>Date</th>
+                            <th>Documents</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var claim in Model)
+                        {
+                            <tr>
+                                <td>@claim.claimID</td>
+                                <td>@claim.LecturerName</td>
+                                <td>@claim.module_name</td>
+                                <td>@claim.faculty_name</td>
+                                <td>R @claim.TotalAmount.ToString("F2")</td>
+                                <td>@claim.creating_date.ToShortDateString()</td>
+                                <td>@(string.IsNullOrEmpty(claim.supporting_documents) ? "None" : claim.supporting_documents)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

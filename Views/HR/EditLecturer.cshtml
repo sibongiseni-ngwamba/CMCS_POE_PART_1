@@ -1,5 +1,53 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model CMCS_POE_PART_2.Models.User
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-body p-5">
+                <h2 class="card-title text-center mb-4 text-primary">Edit Lecturer</h2>
+                <form asp-action="EditLecturer" method="post" novalidate>
+                    <input type="hidden" asp-for="userID" />
+                    <input type="hidden" asp-for="role" />
+
+                    <div class="mb-3">
+                        <label asp-for="full_names" class="form-label">First Name</label>
+                        <input asp-for="full_names" class="form-control" required />
+                        <span asp-validation-for="full_names" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="surname" class="form-label">Last Name</label>
+                        <input asp-for="surname" class="form-control" required />
+                        <span asp-validation-for="surname" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="email" class="form-label">Email Address</label>
+                        <input asp-for="email" type="email" class="form-control" required />
+                        <span asp-validation-for="email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="gender" class="form-label">Gender</label>
+                        <select asp-for="gender" class="form-select" required>
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="gender" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                    <div class="text-center mt-3">
+                        <a asp-action="Lecturers" class="text-primary">Back to Lecturers</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
