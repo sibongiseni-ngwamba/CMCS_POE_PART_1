@@ -1,7 +1,10 @@
 using CMCS_POE_PART_2.Data;
+using QuestPDF.Infrastructure;
+
+QuestPDF.Settings.License = LicenseType.Community;
+
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession(options =>
 {
@@ -20,19 +23,16 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseSession();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+  name: "default",
+  pattern: "{controller=Account}/{action=Login}/{id?}");
 
 // Init DB on startup
 var dbInit = new auto_create_instance_db_tables();
-dbInit.InitializeSystemAsync();
+await dbInit.InitializeSystemAsync();
 
 app.Run();
