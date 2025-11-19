@@ -11,7 +11,7 @@ namespace CMCS_POE_PART_2.Data
     public class auto_create_instance_db_tables
     {
         private readonly string instanceName = "claim_system";
-        private readonly string databaseName = "claims_database";
+        private readonly string databaseName = "cmcs_database";
         private string? _connectionStringToDatabase;  // Backing field for lazy
 
         /// <summary>
