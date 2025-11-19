@@ -1,18 +1,21 @@
 ﻿@model CMCS_POE_PART_2.Models.User
+
 <div class="row justify-content-center">
     <div class="col-md-6">
         <div class="card shadow">
             <div class="card-body p-5">
                 <h2 class="card-title text-center mb-4 text-primary">Register for CMCS</h2>
-                <form asp-action="Register" method="post">
+                <form asp-action="Register" method="post" novalidate>
                     <div class="mb-3">
                         <label asp-for="full_names" class="form-label">First Name</label>
                         <input asp-for="full_names" class="form-control" required />
+                        <span class="form-help">Your legal first name.</span>
                         <span asp-validation-for="full_names" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label asp-for="surname" class="form-label">Last Name</label>
                         <input asp-for="surname" class="form-control" required />
+                        <span class="form-help">Your legal last name.</span>
                         <span asp-validation-for="surname" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
@@ -27,6 +30,7 @@
                             <option value="Lecturer">Lecturer</option>
                             <option value="Coordinator">Programme Coordinator</option>
                             <option value="Manager">Programme Manager</option>
+                            <option value="HRManager">HR Manager</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -56,6 +60,7 @@
         </div>
     </div>
 </div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
