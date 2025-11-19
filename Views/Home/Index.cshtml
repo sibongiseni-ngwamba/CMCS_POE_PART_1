@@ -2,11 +2,13 @@
     var role = ViewBag.Role as string;
     var name = ViewBag.UserName as string;
 }
+
 <div class="row text-center">
     <div class="col-12 mb-4">
         <h1 class="display-4 text-primary">Welcome, @name!</h1>
         <p class="lead">Role: <span class="badge bg-secondary">@role</span></p>
     </div>
+
     <div class="row">
         @if (role == "Lecturer")
         {
@@ -56,6 +58,31 @@
                             <h5 class="card-title text-success">Approve Verified Claims</h5>
                             <p class="card-text">Make final decisions on pre-verified claims.</p>
                             <button class="btn btn-success">Decide Now</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+        else if (role == "HRManager")
+        {
+            <div class="col-md-6 mb-3">
+                <a asp-controller="HR" asp-action="Dashboard" class="text-decoration-none">
+                    <div class="card h-100 shadow border-info">
+                        <div class="card-body">
+                            <h5 class="card-title text-info">HR Dashboard</h5>
+                            <p class="card-text">View approved claims and export reports.</p>
+                            <button class="btn btn-info">Open Dashboard</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 mb-3">
+                <a asp-controller="HR" asp-action="Lecturers" class="text-decoration-none">
+                    <div class="card h-100 shadow border-primary">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">Manage Lecturers</h5>
+                            <p class="card-text">Search and update lecturer details.</p>
+                            <button class="btn btn-primary">Manage</button>
                         </div>
                     </div>
                 </a>

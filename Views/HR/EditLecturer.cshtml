@@ -4,35 +4,29 @@
     <div class="col-md-6">
         <div class="card shadow">
             <div class="card-body p-5">
-                <h2 class="card-title text-center mb-4 text-primary">Register for CMCS</h2>
-                <form asp-action="Register" method="post" novalidate>
+                <h2 class="card-title text-center mb-4 text-primary">Edit Lecturer</h2>
+                <form asp-action="EditLecturer" method="post" novalidate>
+                    <input type="hidden" asp-for="userID" />
+                    <input type="hidden" asp-for="role" />
+
                     <div class="mb-3">
                         <label asp-for="full_names" class="form-label">First Name</label>
                         <input asp-for="full_names" class="form-control" required />
-                        <span class="form-help">Your legal first name.</span>
                         <span asp-validation-for="full_names" class="text-danger"></span>
                     </div>
+
                     <div class="mb-3">
                         <label asp-for="surname" class="form-label">Last Name</label>
                         <input asp-for="surname" class="form-control" required />
-                        <span class="form-help">Your legal last name.</span>
                         <span asp-validation-for="surname" class="text-danger"></span>
                     </div>
+
                     <div class="mb-3">
                         <label asp-for="email" class="form-label">Email Address</label>
                         <input asp-for="email" type="email" class="form-control" required />
                         <span asp-validation-for="email" class="text-danger"></span>
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="role" class="form-label">Role</label>
-                        <select asp-for="role" class="form-select" required>
-                            <option value="">Select Role</option>
-                            <option value="Lecturer">Lecturer</option>
-                            <option value="Coordinator">Programme Coordinator</option>
-                            <option value="Manager">Programme Manager</option>
-                            <option value="HRManager">HR Manager</option>
-                        </select>
-                    </div>
+
                     <div class="mb-3">
                         <label asp-for="gender" class="form-label">Gender</label>
                         <select asp-for="gender" class="form-select" required>
@@ -41,21 +35,14 @@
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
                         </select>
+                        <span asp-validation-for="gender" class="text-danger"></span>
                     </div>
-                    <div class="mb-3">
-                        <label asp-for="password" class="form-label">Password</label>
-                        <input asp-for="password" type="password" class="form-control" required />
-                        <span asp-validation-for="password" class="text-danger"></span>
+
+                    <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                    <div class="text-center mt-3">
+                        <a asp-action="Lecturers" class="text-primary">Back to Lecturers</a>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Confirm Password</label>
-                        <input name="confirmPassword" type="password" class="form-control" required />
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
                 </form>
-                <div class="text-center mt-3">
-                    <a asp-action="Login" class="text-primary">Back to Login</a>
-                </div>
             </div>
         </div>
     </div>

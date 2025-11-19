@@ -27,6 +27,7 @@ namespace CMCS_POE_PART_2.Controllers
                     TempData["Error"] = "Invalid credentials. Please register if new.";
                     return View();
                 }
+
                 HttpContext.Session.SetInt32("UserId", user.userID);
                 HttpContext.Session.SetString("Role", user.role);
                 HttpContext.Session.SetString("UserName", $"{user.full_names} {user.surname}");
@@ -46,7 +47,8 @@ namespace CMCS_POE_PART_2.Controllers
         {
             if (!ModelState.IsValid) return View(user);
 
-            if (string.IsNullOrEmpty(user.password) || user.password.Length < 8 || !Regex.IsMatch(user.password, @"^(?=.*[a-zA-Z])(?=.*\d)"))
+            // Password policy: 8+ chars, letters+numbers
+            if (string.IsNullOrEmpty(user.password) || user.password.Length < 8 || !Regex.IsMatch(user.password, @"^(?=.*[a-zA-Z])(?=.*\d).+$"))
             {
                 ModelState.AddModelError("password", "Password must be 8+ characters with letters and numbers.");
                 return View(user);
@@ -54,6 +56,14 @@ namespace CMCS_POE_PART_2.Controllers
             if (user.password != confirmPassword)
             {
                 ModelState.AddModelError("password", "Passwords do not match.");
+                return View(user);
+            }
+
+            // Role validation incl. HRManager
+            var allowedRoles = new[] { "Lecturer", "Coordinator", "Manager", "HRManager" };
+            if (string.IsNullOrWhiteSpace(user.role) || !allowedRoles.Contains(user.role))
+            {
+                ModelState.AddModelError("role", "Invalid role selected.");
                 return View(user);
             }
 

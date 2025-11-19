@@ -1,4 +1,5 @@
 ﻿@model CMCS_POE_PART_2.Models.Claim
+
 <div class="row justify-content-center" data-aos="fade-up" data-aos-duration="1000">
     <div class="col-md-8">
         <div class="card shadow" data-aos="zoom-in" data-aos-delay="200">
@@ -6,40 +7,45 @@
                 <h5 class="mb-0">Submit New Claim</h5>
             </div>
             <div class="card-body">
-                <form id="claimForm" asp-action="New" method="post" enctype="multipart/form-data">
+                <form id="claimForm" asp-action="New" method="post" enctype="multipart/form-data" novalidate>
                     <div class="row">
-                        <div class="col-md-3 mb-3" data-aos="fade-right" data-aos-delay="300">
+                        <div class="col-md-3 mb-3">
                             <label class="form-label">Sessions</label>
                             <input asp-for="number_of_sessions" type="number" class="form-control" required min="1" />
+                            <div class="form-text">Total sessions worked.</div>
                         </div>
-                        <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="400">
+                        <div class="col-md-3 mb-3">
                             <label class="form-label">Hours</label>
                             <input asp-for="number_of_hours" type="number" class="form-control" required min="1" />
+                            <div class="form-text">Hours per session.</div>
                         </div>
-                        <div class="col-md-3 mb-3" data-aos="fade-left" data-aos-delay="500">
+                        <div class="col-md-3 mb-3">
                             <label class="form-label">Rate (R/hr)</label>
                             <input asp-for="amount_of_rate" type="number" class="form-control" required min="1" />
+                            <div class="form-text">Your hourly rate.</div>
                         </div>
-                        <div class="col-md-3 mb-3" data-aos="fade-down" data-aos-delay="600">
+                        <div class="col-md-3 mb-3">
                             <label class="form-label">Total (R)</label>
                             <input id="totalDisplay" class="form-control bg-light" readonly />
                             <input type="hidden" asp-for="TotalAmount" />
                         </div>
                     </div>
-                    <div class="mb-3" data-aos="fade-up" data-aos-delay="700">
+
+                    <div class="mb-3">
                         <label asp-for="module_name" class="form-label">Module Name</label>
                         <input asp-for="module_name" class="form-control" required />
                     </div>
-                    <div class="mb-3" data-aos="fade-up" data-aos-delay="800">
+                    <div class="mb-3">
                         <label asp-for="faculty_name" class="form-label">Faculty Name</label>
                         <input asp-for="faculty_name" class="form-control" required />
                     </div>
-                    <div class="mb-3" data-aos="fade-up" data-aos-delay="900">
+                    <div class="mb-3">
                         <label class="form-label">Supporting Documents</label>
                         <input type="file" multiple name="files" class="form-control" accept=".pdf,.docx,.xlsx" />
                         <div id="fileList" class="mt-2 small text-muted"></div>
                     </div>
-                    <button type="submit" id="submitBtn" class="btn btn-success btn-lg w-100" data-aos="pulse" data-aos-delay="1000">
+
+                    <button type="submit" id="submitBtn" class="btn btn-success btn-lg w-100">
                         <span class="btn-text">Submit Claim</span>
                         <div id="loadingSpinner" class="spinner-border spinner-border-sm d-none ms-2" role="status">
                             <span class="visually-hidden">Loading...</span>
@@ -51,68 +57,42 @@
     </div>
 </div>
 
-<!-- Success Modal (Slide-in Toast Style) -->
-<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true" data-aos="slide-in-right" data-aos-duration="800">
+<!-- Confirm submission modal -->
+<div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content bg-success text-white">
+        <div class="modal-content bg-secondary text-white">
             <div class="modal-body text-center py-4">
-                <h5>Claim Submitted!</h5>
-                <p>Your claim is now pending review. Track it on the dashboard.</p>
-                <button type="button" class="btn btn-light" data-bs-dismiss="modal" onclick="window.location.href='@Url.Action("Index", "Claims")'">Go to Dashboard</button>
+                <h5>Confirm submission</h5>
+                <p>Total amount: <strong id="confirm-total"></strong></p>
+                <button type="button" class="btn btn-light" id="confirmSubmitBtn">Confirm</button>
+                <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // AOS Init (already in layout, but local refresh for safety)
     AOS.init({ duration: 800, once: true });
-
     const numInputs = document.querySelectorAll('input[type="number"]:not(#totalDisplay)');
     numInputs.forEach(input => input.addEventListener('input', calculateTotal));
 
     const fileInput = document.querySelector('input[type="file"]');
     fileInput?.addEventListener('change', (e) => {
-        const list = document.getElementById('fileList');
-        list.innerHTML = '';
-        Array.from(e.target.files).forEach(file => {
-            const div = document.createElement('div');
-            div.textContent = `${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
-            list.appendChild(div);
-        });
+      const list = document.getElementById('fileList');
+      list.innerHTML = '';
+      Array.from(e.target.files).forEach(file => {
+        const div = document.createElement('div');
+        div.textContent = `${file.name} (${(file.size / 1024).toFixed(0)} KB)`;
+        list.appendChild(div);
+      });
     });
 
     function calculateTotal() {
-        const sessions = parseInt(document.querySelector('[name="number_of_sessions"]').value) || 0;
-        const hours = parseInt(document.querySelector('[name="number_of_hours"]').value) || 0;
-        const rate = parseInt(document.querySelector('[name="amount_of_rate"]').value) || 0;
-        const total = sessions * hours * rate;
-        document.getElementById('totalDisplay').value = `R ${total.toFixed(2)}`;
-        document.querySelector('[name="TotalAmount"]').value = total;
+      const sessions = parseInt(document.querySelector('[name="number_of_sessions"]').value) || 0;
+      const hours = parseInt(document.querySelector('[name="number_of_hours"]').value) || 0;
+      const rate = parseInt(document.querySelector('[name="amount_of_rate"]').value) || 0;
+      const total = sessions * hours * rate;
+      document.getElementById('totalDisplay').value = `R ${total.toFixed(2)}`;
+      document.querySelector('[name="TotalAmount"]').value = total;
     }
-
-    // Submit Animation Handler
-    document.getElementById('claimForm').addEventListener('submit', function(e) {
-        const btn = document.getElementById('submitBtn');
-        const btnText = btn.querySelector('.btn-text');
-        const spinner = document.getElementById('loadingSpinner');
-
-        // Trigger pulse animation on click
-        btn.classList.add('animate__animated', 'animate__pulse');  // Bonus Animate.css for extra flair
-
-        // Show spinner, hide text
-        btnText.classList.add('d-none');
-        spinner.classList.remove('d-none');
-
-        // Disable button to prevent double-submit
-        btn.disabled = true;
-
-        // On success (server redirect handles, but JS optimistic)
-        // Note: Real success via TempData in layout; this mocks for demo if needed
-        setTimeout(() => {  // Simulate async delay
-            const modal = new bootstrap.Modal(document.getElementById('successModal'));
-            modal.show();
-            // Reset btn after modal close (handled by redirect)
-        }, 2000);  // Placeholder—actual via server response
-    });
 </script>
