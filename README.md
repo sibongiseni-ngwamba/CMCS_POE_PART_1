@@ -1,37 +1,51 @@
 # CMCS - Claims Management and Verification System 
 
-## Overview
-The CMCS **Claims Management and Verification System** is an ASP.NET Core MVC web application developed as part of the PROG6212 Portfolio of Evidence (PoE). 
-It was designed to streamline the process of submitting and approving monthly claims for Independent Contractor (IC) lecturers. 
-By simulating a real-world workflow, the CMCS provides lecturers, programme coordinators, and managers with a simplified digital platform for handling claim submissions, pre-approvals, and approvals.
-It allows lecturers to submit teaching claims, program coordinators to verify them, and academic managers to approve or reject them.
-The system ensures transparent claim tracking and file upload for supporting documents.
+## 📌 Overview
 
-This project demonstrates skills in **C#**, **ASP.NET Core MVC**, **GUI design**, and **project planning**, aligning with the module outcomes for Programming 2B.
+The **Claims Management and Verification System** (CMCS Portal) is an ASP.NET Core MVC web application developed as part of the PROG6212 Portfolio of Evidence (PoE).
+It streamlines the process of submitting and approving monthly claims for Independent Contractor (IC) lecturers by simulating a real-world workflow. The system provides:
+Lecturers with a digital platform to submit teaching claims and upload supporting documents.
+Programme Coordinators with tools to verify claims.
+Programme Managers with functionality to approve or reject claims. HR Managers with reporting and export features for financial oversight.
+This project demonstrates skills in **C#**, **ASP.NET Core MVC**, **GUI design**, **database integration**,and **project planning**, aligning with module outcomes for Programming 2B.
 
 ---
 
-## Features (Prototype Implementation)
+## 🚀 Features (Prototype Implementation)
 - **Lecturer Features**
   - Submit monthly claims (mock navigation only, no persistence).
   - Upload supporting documents (to be implemented in later iterations).
   - Track claim statuses with sample data provided.
-  - Lecturer claim submission with document uploads
+  - Lecturer claim submission with document uploads.
+  - Submit monthly claims with real-time total calculation.
+  - Upload supporting documents (PDF, DOCX, XLSX with validation).
+  - Track claim statuses (Pending, Verified, Approved, Rejected).
+  - Auto-approval for low-value claims (≤ R1000).
 
 - **Programme Coordinator Features**
   - View lecturer-submitted claims.
   - Verify accuracy of submitted claims.
   - Pre-approve pending claims (sample data available).
-  - Coordinator and Manager claim review workflow
+  - Coordinator and Manager claim review workflow.
+  - View lecturer-submitted claims.
+  - Verify accuracy of submitted claims.
+  - Pre-approve pending claims with anomaly detection (e.g., high hourly rates).
 
 - **Programme Manager Features**
   - View pre-approved claims from coordinators.
   - Approve or reject claims (sample data available).
-  - Coordinator and Manager claim review workflow
-
+  - Coordinator and Manager claim review workflow.
+  - View pre-approved claims from coordinators.
+  - Approve or reject claims with audit trail logging.
+  
+- **HR Manager Features**
+  - Dashboard to view approved claims.
+  - Export reports in CSV and PDF invoice format.
+  - Subtotals per lecturer and grand totals for all claims.
+  
 - **Shared Features**
   - Navigation bar with role-based actions.
-  - Responsive and user-friendly interface with a red + gray theme.
+  - Responsive and user-friendly interface with a cyan + gray theme.
   - Sample data tables for Track, Pre-Approve, and Approve views.
 
 - **Additional Features**
@@ -42,50 +56,71 @@ This project demonstrates skills in **C#**, **ASP.NET Core MVC**, **GUI design**
 ---
 
 ## System Structure
-CMCS/
+**Code**
+CMCS_POE_PART_2/
 ├── Controllers/
 │   ├── AccountController.cs   # Login, Register, Logout with hashing
 │   ├── ApprovalController.cs  # Verify and Approve claims
 │   ├── ClaimsController.cs    # New claim submission, Index for tracking
-│   └── HomeController.cs      # Role-based dashboard
+│   ├── HomeController.cs      # Role-based dashboard
+│	└── HRController.cs        # View claims and manage 
 │
 ├── Models/
 │   ├── Claim.cs               # Claim model
+│   ├── DbHelper.cs               # DbHelper model
+│	├── ErrorViewModel.cs               # ErrorView model
 │   └── User.cs                # User model
 │
+├── Reports/
+│   └── ApprovedClaimsReport.cs           # Claim Report or Invoice Pdf
+│
 ├── Data/
-│   └── DbHelper.cs            # Database operations (CRUD for Users/Claims)
+│   └── auto_create_instance_db_tables.cs           # Database creator and manager (CRUD for Users/Claims)
 │
 ├── Views/
 │   ├── Account/               # Login, Register
+│   │   ├── Login.cshtml   # Login razor
+│	│	└── Register.cshtml        # Register razor
+│   │
 │   ├── Approval/              # Approve, Verify
+│   │   ├── Approve.cshtml   # Approve razor
+│	│	└── Verify.cshtml        # Verify razor
+│   │
 │   ├── Claims/                # Index (track), New
+│   │   ├── Index.cshtml   # Track razor
+│	│	└── New.cshtml        # Claim maker razor
+│   │
 │   ├── Home/                  # Index (dashboard)
+│	│	└── Index.cshtml        # Dashboard razor
+│	│
 │   └── Shared/                # _Layout (navbar, alerts)
-│
+│		└── _Layout.cshtml        # Layout razor
+│	
 ├── wwwroot/
-│   ├── css/site.css           # Custom Grok-inspired theme
+│   ├── css/site.css           # Custom theme (Red + Gray, dark mode)
+│   ├── images/cmcs-logo.png           # Logo Image
 │   └── js/app.js              # Form handling, animations
 │
 ├── Program.cs                 # App setup, session, routes
 │
-└── CMCS.Tests/                # Test project
-    ├── AccountControllerTests.cs
-    ├── ApprovalControllerTests.cs
-    ├── ClaimsControllerTests.cs
-    └── DbHelperIntegrationTests.cs  # With edge cases
+│
+├── appsettings.json                 # Database Connection
+│
+├── Test.cs  # Test project Important changed for part 3
+│
+└── XUnitText.cs                # Test project xunit test
 
 ---
 
 ## Technology Stack
 - **Framework:** ASP.NET Core MVC (.NET 8.0)
 - **Language:** C#  
-- **Frontend:** Razor Views, HTML5, CSS3 
+- **Frontend:** Razor Views, HTML5, CSS3, Bootstrap 5, Animate.css, AOS.js
 - **Database:** SQL LocalDB (auto-created via script)
 - **Frontend:** Bootstrap 5, AOS.js, Animate.css
 - **Testing:** xUnit + Moq 
-- **Styling:** Custom CSS (Red + Gray theme, responsive design)  
-- **IDE:** Visual Studio 2022 (or later)  
+- **Styling:** Custom CSS (cyan + Gray theme, responsive design)  
+- **IDE:** Visual Studio 2026 (or later)  
 
 ---
 
@@ -105,10 +140,12 @@ CMCS/
    - The application starts on the **Login page**.  
    - Use the navigation bar to move between **Home**, **Claim**, **Track Claim**, **Pre-Approve**, and **Approve**.  
 5. Access the site at `https://localhost:5001` (or your configured port).
-6. When Project Runs:
+6. Workflow:
+   - Register → Login → Redirected to role-based dashboard (Lecturer, Coordinator, Manager, HR Manager).
+7. When Project Runs:
 	- It will start the user on login page click on register button to go there
 	- Then on register enter details and pick a role 
-	- Then it will take you back to login where when logining in will take you to **Lecturer**, **Program Coordinator**, **Program Manager** pages
+	- Then it will take you back to login where when logining in will take you to **Lecturer**, **Program Coordinator**, **Program Manager**, **HR Manager** pages
 ---
 
 ## Database Initialization
@@ -164,5 +201,5 @@ xUnit tests mock the `IDbHelper` interface to ensure controllers behave correctl
 
 ## GitHub Link
 - Link: https://github.com/sibongiseni-ngwamba/CMCS_POE_Part1.git
-- Link Part 2. I could not get the First Repo: https://github.com/sibongiseni-ngwamba/CMCS_POE_PART_1.git
+- Link Part 2 AND 3: https://github.com/sibongiseni-ngwamba/CMCS_POE_PART_2.git
 
